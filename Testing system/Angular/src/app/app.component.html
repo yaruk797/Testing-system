@@ -1,0 +1,36 @@
+<div class="container">
+  <div>
+    <button *ngIf='!isLoggedIn' (click)="Authorization()" class="panel_button">Log in</button>
+    <button *ngIf='!isLoggedIn' (click)="Registration()" class="panel_button">Registration</button>
+    <button *ngIf='isLoggedIn' (click)="logout()" class="panel_button">Log out</button>
+  </div>
+
+  <div *ngIf="showAuthorization" class="form">
+    <p>username: user@gmail.com</p>
+    <p>password:1234</p>
+    <label>Login</label>
+    <input type="email" placeholder="user@email.com" #email>
+    <label>Password</label>
+    <input type="password" #password>
+    <div class="button">
+      <button (click)='login(email.value, password.value)' class="form_button">Login</button>
+    </div>
+  </div>
+
+  <div *ngIf="showRegistration" class="form" >
+    <p>Don't work!</p>
+    <input type="text" placeholder="Ім'я" #firstName>
+    <input type="text" placeholder="Прізвище" #lastName>
+    <input type="text" placeholder="user@email.com" #emailReg>
+    <input type="password" #passwordReg>
+    <input type="password" #confirmPassword>
+    <div class="button">
+      <button (click)='registration(firstName.value, lastName.value, emailReg.value, passwordReg.value, confirmPassword.value)' >Registration</button>
+    </div>
+    
+  </div>
+  <div>
+    
+  </div>
+  <app-tests *ngIf='isLoggedIn'></app-tests>
+</div>

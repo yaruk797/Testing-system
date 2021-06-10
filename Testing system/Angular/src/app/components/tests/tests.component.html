@@ -1,0 +1,52 @@
+<div *ngIf="showTests">
+    <h1>Tests</h1>
+    <table>
+        <tr *ngFor="let t of tests">
+            <td>{{ t.name }}</td>
+            <td>
+                <button (click)="showDescription(t)">Start</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="showDescr" class="description">
+    <h2>{{ selectedTest?.name }}</h2>
+    <p>{{ selectedTest?.description }} </p>
+    <form [formGroup]="agreeForm" (ngSubmit)="agreeSubmit()">
+        <div>
+            <input id="agree" type="checkbox" name="agree" formControlName="agree">
+            <label for="agree">I agree to start</label>
+        </div>
+        <div class="button">
+            <button type="submit" [disabled]="!agreeForm.valid">Proceed</button>
+        </div>
+    </form>
+</div>
+
+
+<div>
+    <form *ngIf="testIsStarting" [formGroup]="testForm" (ngSubmit)="testSubmit()">
+           
+        <p>{{ getQuestion().name }}</p>
+
+        <table>
+            <tr *ngFor="let a of getQuestion().answers">
+                <td>
+                    <input id={{a.name}} type="radio" value={{a.name}} [(ngModel)]="userAnswer" name="test" formControlName="test" >
+                    <label for={{a.name}}>{{ a.name }}</label>
+                </td>
+            </tr>
+        </table>
+              
+        <button  type="submit" [disabled]="!testForm.valid">Next</button>
+    </form>
+</div>
+
+<div *ngIf="testIsPassed" class="result">
+    <h2>Результати</h2>
+    <p>Кількість питань: {{ selectedTest.questions?.length }}</p>
+    <p>Кількість правильних відповідей: {{ testResult }}</p>
+    <div class="button">
+        <button (click)="backToTests()" >Back to tests</button>
+    </div>
+</div>

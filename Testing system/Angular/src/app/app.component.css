@@ -1,0 +1,47 @@
+.container{
+    width: 70%;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 5px 10px;
+    background-color: rgb(209, 252, 234);
+}
+button{
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-size: 17px;
+    margin-top: 5px;
+    background-color: rgb(99, 253, 253);
+    border: 1px solid rgb(53, 97, 243);
+}
+.panel_button{
+    border: 1px solid green;
+    background-color: rgb(192, 253, 99);
+    margin-right: 5px;
+}
+.form{
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px;
+}
+.form p{
+    width: 100%;
+    margin: 0;
+}
+input{
+    padding:5px;
+    border-radius:5px;
+    width: 300px;
+}
+label{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.button{
+    width: 120px;
+    margin: 0 auto;
+}
+.button button{
+    width: 100%;
+}
