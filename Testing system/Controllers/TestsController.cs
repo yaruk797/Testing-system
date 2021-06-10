@@ -37,9 +37,7 @@ namespace Testing_system.Controllers
         [HttpGet("test/{id}")]
         public async Task<Test> GetTest(int id)
         {
-            var a = _db.Tests.FirstOrDefault();
-            await _db.Tests.Include(t => t.Questions).ThenInclude(t=>t.Answers).ToListAsync();
-            return a;
+            return await _db.Tests.Where(t => t.Id == id).Include(t => t.Questions).ThenInclude(t => t.Answers).FirstOrDefaultAsync();
         }
     }
 }
