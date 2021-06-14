@@ -24,7 +24,7 @@ export class TestsService{
         return this.http.get<Test>(`${this.url}/test/${test.id}`)
     }
 
-    getTestResult(testId: number, questions: Question[]){
-        return this.http.post<number>(`${this.url}/result/${testId}`, {questions})
+    getTestResult(questions: Question[]){
+        return this.http.post<number>(`${this.url}/result`, questions)
     }
 }

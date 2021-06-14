@@ -10,10 +10,10 @@ namespace Testing_system.Models.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Test Test { get; set; }
-        public int TestId { get; set; }
         [NotMapped]
         public string UserAnswer { get; set; }
+        public Test Test { get; set; }
+        public int TestId { get; set; }
         public List<Answer> Answers { get; set; }
     }
 }

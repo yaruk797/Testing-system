@@ -1,3 +1,14 @@
 body{
     margin: 0;
 }
+button{
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-size: 17px;
+    margin-top: 5px;
+    background-color: rgb(99, 253, 253);
+    border: 1px solid rgb(53, 97, 243);
+}
+label, p{
+    font-size: 18px;;
+}

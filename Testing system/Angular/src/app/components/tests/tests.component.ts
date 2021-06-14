@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
+import { Router } from '@angular/router';
 
 import { Test } from 'src/app/models/test'
 import { TestsService } from 'src/app/services/tests.service';
@@ -24,7 +25,7 @@ export class TestsComponent implements OnInit {
   testIsPassed: boolean = false;
   userAnswer: string = '';
 
-  constructor(ts: TestsService) {
+  constructor(ts: TestsService, private router: Router) {
     this.testsService = ts;
    }
 
@@ -45,19 +46,20 @@ export class TestsComponent implements OnInit {
   }
   
   testSubmit(){
-    console.log(this.testForm.value);
-    this.getResult();
+    this.selectedTest.questions[this.counter].userAnswer = this.userAnswer;
+    this.selectedTest.questions[this.counter].answers = null;
+    
     this.testForm = new FormGroup({
       test: new FormControl('', Validators.required)
     });
     this.counter++;
 
     if(this.counter == this.selectedTest.questions?.length){
+      this.getResult();
       this.testIsPassed = true;
       this.testIsStarting = false;
     }
 
-    
   }
   agreeSubmit(){
     this.showTests = false;
@@ -68,8 +70,7 @@ export class TestsComponent implements OnInit {
   loadTests(){
     this.testsService.getTests()
     .subscribe((data: Test[])=> this.tests = data);
-    if(this.tests != undefined)
-      console.log(this.tests)
+    this.router.navigate(['tests']);
   }
 
   showDescription(test: Test){
@@ -82,22 +83,16 @@ export class TestsComponent implements OnInit {
     .subscribe((data: Test)=> this.selectedTest = data);
   }
 
-
   getQuestion():Question{
     if(this.counter < this.selectedTest.questions?.length)
       return this.selectedTest?.questions[this.counter];
     else
-      return new Question(0,'Hello','', undefined);
+      return new Question(0,'','', 0, undefined);
   }
 
   getResult(){
-
-      for(var j=0; j<this.selectedTest.questions[this.counter].answers.length; j++){
-        if(this.selectedTest.questions[this.counter].answers[j].isRight == true &&
-          this.selectedTest.questions[this.counter].answers[j].name  == this.userAnswer){
-          this.testResult++;
-        }
-    }
+    this.testsService.getTestResult(this.selectedTest.questions)
+    .subscribe((data: number)=>this.testResult = data);
   }
 
   backToTests(){

@@ -1,0 +1,15 @@
+<div class="form">
+    <p>User 1:</p>
+    <p>login: user@gmail.com</p>
+    <p>password: 1234</p>
+    <p>User 2:</p>
+    <p>login: user2@gmail.com</p>
+    <p>password: 12345</p>
+    <label>Login</label>
+    <input type="email" placeholder="user@email.com" required #email>
+    <label>Password</label>
+    <input type="password" required #password>
+    <div class="button">
+      <button (click)='login(email.value, password.value)' class="form_button">Login</button>
+    </div>
+  </div>

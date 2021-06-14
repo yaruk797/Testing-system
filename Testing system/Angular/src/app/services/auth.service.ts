@@ -11,7 +11,7 @@ import { Token } from 'src/app/models/token';
 import { SYSTEM_API_URL } from '../app-injection-token';
 
 
-export var ACCESS_TOKEN_KEY = '';
+export var ACCESS_TOKEN_KEY = 'currentUser';
 
 @Injectable({
   providedIn: 'root'
@@ -29,18 +29,17 @@ export class AuthService {
 		
 		return this.http.post<Token>(`${environment.apiUrl}api/login/login`, { email, password })
             .pipe(tap(token => {
-				localStorage.setItem('currentUser', token.token);
-				console.log(localStorage.getItem('currentUser'));
+				localStorage.setItem(ACCESS_TOKEN_KEY, token.token);
             }));
 	}
 	
 	isAuthenticated():boolean{
-		var token = localStorage.getItem('currentUser');
-		return token != null;
+		var token = localStorage.getItem(ACCESS_TOKEN_KEY);
+		return token != null && !this.JwtHelper.isTokenExpired(token);
 	}
 
 	logout(): void{
-		localStorage.removeItem('currentUser');
-		this.router.navigate(['']);
+		localStorage.removeItem(ACCESS_TOKEN_KEY);
+		this.router.navigate(['login']);
 	}
 }

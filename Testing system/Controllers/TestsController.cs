@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Testing_system.Models;
 using Testing_system.Models.Entities;
+using System.Security.Claims;
 
 namespace Testing_system.Controllers
 {
@@ -17,12 +18,10 @@ namespace Testing_system.Controllers
     [ApiController]
     public class TestsController : ControllerBase
     {
-        private IConfiguration _config;
         private TestDbContext _db;
 
-        public TestsController(IConfiguration config, TestDbContext db)
+        public TestsController(TestDbContext db)
         {
-            _config = config;
             _db = db;
         }
 
@@ -30,7 +29,8 @@ namespace Testing_system.Controllers
         [HttpGet("tests")]
         public async Task<IEnumerable<Test>> GetTests()
         {
-            return await _db.Tests.ToListAsync();
+            var userId = Int32.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return await _db.Tests.Where(t=>t.UserId == userId).ToListAsync();
         }
 
         [Authorize]
@@ -38,6 +38,26 @@ namespace Testing_system.Controllers
         public async Task<Test> GetTest(int id)
         {
             return await _db.Tests.Where(t => t.Id == id).Include(t => t.Questions).ThenInclude(t => t.Answers).FirstOrDefaultAsync();
+        }
+
+        [Authorize]
+        [HttpPost("result")]
+        public async Task<IActionResult> GetTestResult([FromBody] Question[] questionModels)
+        {
+            int result = 0;
+            var test = await _db.Tests.Where(t => t.Id == questionModels.FirstOrDefault().TestId)
+                .Include(t => t.Questions).ThenInclude(t => t.Answers).FirstOrDefaultAsync();
+
+            for (var i = 0; i < test.Questions.Count; i++)
+            {
+                for (var j = 0; j < test.Questions[i].Answers.Count; j++)
+                {
+                    if (test.Questions[i].Answers[j].IsRight &&
+                        test.Questions[i].Answers[j].Name == questionModels[i].UserAnswer)
+                        result++;
+                }
+            }
+            return Ok(result);
         }
     }
 }

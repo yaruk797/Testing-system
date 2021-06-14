@@ -78,11 +78,13 @@ namespace Testing_system
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TestDbContext context)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
             }
             else
             {
@@ -100,7 +102,6 @@ namespace Testing_system
             }
 
             app.UseRouting();
-            //app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
             
             app.UseCors("AllowOrigin");
             app.UseAuthentication();

@@ -7,11 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
 import { SYSTEM_API_URL } from './app-injection-token';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from './services/auth.service';
-import { TestsComponent } from './components/tests/tests.component'
+import { TestsComponent } from './components/tests/tests.component';
+import { LoginComponent } from './components/login/login.component'
 
 
 export function tokenGetter(){
@@ -21,8 +21,8 @@ export function tokenGetter(){
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    TestsComponent
+    TestsComponent,
+    LoginComponent
 
   ],
   imports: [
